@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <style>
+        .video-container {
+            width: 100%;
+            height: 70vh;
+            background-color: black;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <video id="videoPlayer" controls>
+            <source id="videoSource" type="application/x-mpegURL">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script>
+        const streamUrls = {
+            'animax': 'http://phcfrancis3.duckdns.org:1234/stream/trickflix/animax/master.m3u8?u=phc&p=fe2592b42a727e977f055947385b709cc82b16b9a87f88c6abf3900d65d0cdc3',
+            // Add other streams here
+        };
+
+        function getParameterByName(name) {
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            const results = regex.exec(window.location.href);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        const channel = getParameterByName('channel');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const source = document.getElementById('videoSource');
+
+        if (streamUrls[channel]) {
+            source.src = streamUrls[channel];
+            videoPlayer.load();
+            videoPlayer.play();
+        } else {
+            console.error('Invalid channel selected');
+        }
+    </script>
+</body>
+</html>
