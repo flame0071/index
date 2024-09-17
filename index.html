@@ -6,23 +6,14 @@
     <title>IPTV Player</title>
     <script src="https://cdn.jsdelivr.net/npm/shaka-player@3.0.0/dist/shaka-player.compiled.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        #channel-list {
-            margin: 20px;
-        }
-        button {
-            display: block;
-            margin: 5px 0;
-        }
+        body { font-family: Arial, sans-serif; }
+        #channel-list { margin: 20px; }
+        button { display: block; margin: 5px 0; }
     </style>
 </head>
 <body>
     <h1>IPTV Player</h1>
-    <div id="channel-list">
-        <!-- Channel buttons will be inserted here -->
-    </div>
+    <div id="channel-list"></div>
     <video id="video" width="640" height="360" controls></video>
 
     <script>
@@ -31,7 +22,7 @@
                 const response = await fetch('channels.json');
                 const channels = await response.json();
                 const channelList = document.getElementById('channel-list');
-                
+
                 channels.forEach(channel => {
                     const button = document.createElement('button');
                     button.textContent = channel.name;
@@ -47,18 +38,19 @@
             const video = document.getElementById('video');
             const player = new shaka.Player(video);
 
-            // Optional: Attach DRM info if needed
-            // player.getNetworkingEngine().registerRequestFilter(function(type, request) {
-            //     if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
-            //         request.headers['Content-Type'] = 'application/json';
-            //         request.body = JSON.stringify({
-            //             keys: [{
-            //                 kid: channel.licenseKey.split(':')[0],
-            //                 k: channel.licenseKey.split(':')[1]
-            //             }]
-            //         });
-            //     }
-            // });
+            if (channel.licenseKey) {
+                player.getNetworkingEngine().registerRequestFilter(function(type, request) {
+                    if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
+                        request.headers['Content-Type'] = 'application/json';
+                        request.body = JSON.stringify({
+                            keys: [{
+                                kid: channel.licenseKey.split(':')[0],
+                                k: channel.licenseKey.split(':')[1]
+                            }]
+                        });
+                    }
+                });
+            }
 
             try {
                 await player.load(channel.manifestUri);
@@ -68,7 +60,6 @@
             }
         }
 
-        // Load channels when the page loads
         document.addEventListener('DOMContentLoaded', loadChannels);
     </script>
 </body>
