@@ -5,9 +5,7 @@
         "licenseKey": "ec7ee27d83764e4b845c48cca31c8eef:9c0e4191203fccb0fde34ee29999129e"
     },
     {
-        "name": "Another Channel",
-        "manifestUri": "https://example.com/path/to/another_channel.mpd",
-        "licenseKey": "another_key_id:another_key_value"
+        "name": "Animax",
+        "manifestUri": "http://phcfrancis3.duckdns.org:1234/stream/trickflix/animax/master.m3u8?u=phc&p=fe2592b42a727e977f055947385b709cc82b16b9a87f88c6abf3900d65d0cdc3"
     }
-    // Magdagdag pa ng iba pang channels dito
 ]
