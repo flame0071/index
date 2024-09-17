@@ -1,66 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPTV Player</title>
-    <script src="https://cdn.jsdelivr.net/npm/shaka-player@3.0.0/dist/shaka-player.compiled.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        #channel-list { margin: 20px; }
-        button { display: block; margin: 5px 0; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPTV Player</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #333;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+    .channel {
+      width: 250px;
+      margin: 20px;
+      text-align: center;
+      background-color: #444;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .channel img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+    .channel h3 {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    .watch-now {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      width: 100%;
+      max-width: 200px;
+      align-self: center;
+    }
+    .watch-now:hover {
+      background-color: #0056b3;
+    }
+    #videoPlayerContainer, #youtubePlayerContainer {
+      display: none;
+      margin: 20px auto;
+      text-align: center;
+    }
+    video {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+    }
+    iframe {
+      width: 100%;
+      max-width: 800px;
+      height: 450px;
+      border: none;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
-    <h1>IPTV Player</h1>
-    <div id="channel-list"></div>
-    <video id="video" width="640" height="360" controls></video>
 
-    <script>
-        async function loadChannels() {
-            try {
-                const response = await fetch('channels.json');
-                const channels = await response.json();
-                const channelList = document.getElementById('channel-list');
+<div class="container" id="channelContainer">
+  <!-- Channels will be loaded here from JSON -->
+</div>
 
-                channels.forEach(channel => {
-                    const button = document.createElement('button');
-                    button.textContent = channel.name;
-                    button.onclick = () => playChannel(channel);
-                    channelList.appendChild(button);
-                });
-            } catch (error) {
-                console.error('Error loading channels:', error);
+<!-- Video Player Section -->
+<div id="videoPlayerContainer">
+  <video id="videoPlayer" controls></video>
+</div>
+
+<!-- YouTube Player Section -->
+<div id="youtubePlayerContainer">
+  <iframe id="youtubePlayer" allowfullscreen></iframe>
+</div>
+
+<script>
+  const channelContainer = document.getElementById('channelContainer');
+  const videoPlayerContainer = document.getElementById('videoPlayerContainer');
+  const videoPlayer = document.getElementById('videoPlayer');
+  const youtubePlayerContainer = document.getElementById('youtubePlayerContainer');
+  const youtubePlayer = document.getElementById('youtubePlayer');
+
+  // Fetch the JSON file
+  fetch('channels.json')
+    .then(response => response.json())
+    .then(data => {
+      const channels = data.channels;
+
+      // Dynamically create channel cards
+      channels.forEach(channel => {
+        const channelDiv = document.createElement('div');
+        channelDiv.classList.add('channel');
+
+        const logoImg = document.createElement('img');
+        logoImg.src = channel.logo;
+        logoImg.alt = channel.name;
+
+        const channelName = document.createElement('h3');
+        channelName.textContent = channel.name;
+
+        const watchButton = document.createElement('button');
+        watchButton.classList.add('watch-now');
+        watchButton.textContent = 'Watch Now';
+        watchButton.setAttribute('data-url', channel.url);
+        watchButton.setAttribute('data-type', channel.type); // Add the stream type
+
+        // Add event listener to the button to load the correct video type
+        watchButton.addEventListener('click', function() {
+          const streamUrl = this.getAttribute('data-url');
+          const streamType = this.getAttribute('data-type');
+
+          // Reset display
+          videoPlayerContainer.style.display = 'none';
+          youtubePlayerContainer.style.display = 'none';
+
+          if (streamType === 'youtube') {
+            // Handle YouTube embed
+            youtubePlayer.src = `https://www.youtube.com/embed/${streamUrl}`;
+            youtubePlayerContainer.style.display = 'block';
+          } else if (streamType === 'm3u8' || streamType === 'ts') {
+            // Handle HLS streams using HLS.js
+            if (Hls.isSupported()) {
+              const hls = new Hls();
+              hls.loadSource(streamUrl);
+              hls.attachMedia(videoPlayer);
+              videoPlayer.play();
+            } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+              videoPlayer.src = streamUrl;
+              videoPlayer.play();
             }
-        }
+            videoPlayerContainer.style.display = 'block';
+          } else {
+            // Handle other video formats
+            videoPlayer.src = streamUrl;
+            videoPlayerContainer.style.display = 'block';
+            videoPlayer.play();
+          }
+        });
 
-        async function playChannel(channel) {
-            const video = document.getElementById('video');
-            const player = new shaka.Player(video);
+        // Append elements to the channel div
+        channelDiv.appendChild(logoImg);
+        channelDiv.appendChild(channelName);
+        channelDiv.appendChild(watchButton);
 
-            if (channel.licenseKey) {
-                player.getNetworkingEngine().registerRequestFilter(function(type, request) {
-                    if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
-                        request.headers['Content-Type'] = 'application/json';
-                        request.body = JSON.stringify({
-                            keys: [{
-                                kid: channel.licenseKey.split(':')[0],
-                                k: channel.licenseKey.split(':')[1]
-                            }]
-                        });
-                    }
-                });
-            }
+        // Append the channel div to the container
+        channelContainer.appendChild(channelDiv);
+      });
+    })
+    .catch(error => console.error('Error loading channels:', error));
+</script>
 
-            try {
-                await player.load(channel.manifestUri);
-                console.log('The video has been loaded successfully.');
-            } catch (error) {
-                console.error('Error loading video:', error);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', loadChannels);
-    </script>
 </body>
 </html>
