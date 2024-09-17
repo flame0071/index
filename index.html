@@ -52,7 +52,7 @@
 
     <div class="video-container">
         <video id="videoPlayer" controls>
-            <source src="" type="application/x-mpegURL">
+            <source id="videoSource" type="application/x-mpegURL">
             Your browser does not support the video tag.
         </video>
     </div>
@@ -81,19 +81,22 @@
     </div>
 
     <script>
-        const streams = {
-            'animax': '/api/proxy?stream=animax',
-            'dreamworks': '/api/proxy?stream=dreamworks',
-            'rptv': '/api/proxy?stream=rptv',
-            'nbaph': '/api/proxy?stream=nbaph',
-            'a2z': '/api/proxy?stream=a2z'
+        // Base64 encoded URLs
+        const encodedUrls = {
+            'animax': 'aHR0cDovL3BocmFuY2lzMy5kdWNrZG5zLm9yZzovMTIzNC9zdHJlYW0vdHJpY2tmbGl4L2FuaW1heC9tYXN0ZXIubXNoP3U9cGgmJnJlY29yZGxpc3Q9ZmU1MjkyYjQyYTcyNWE5NzdmMDU1OTQ3Mzg1YjcwOWNjODJiMTZiOWE4N2Y4OGM2YWIzOTAwZDY1ZDBjZGMz',
+            'dreamworks': 'aHR0cDovL3BocmFuY2lzMy5kdWNrZG5zLm9yZzovMTIzNC9zdHJlYW0vdHJpY2tmbGl4L2RyZWFtd29ya3MubXNoP3U9cGgmJnJlY29yZGxpc3Q9ZmU1MjkyYjQyYTcyNWE5NzdmMDU1OTQ3Mzg1YjcwOWNjODJiMTZiOWE4N2Y4OGM2YWIzOTAwZDY1ZDBjZGMz',
+            'rptv': 'aHR0cDovL3BocmFuY2lzMy5kdWNrZG5zLm9yZzovMTIzNC9zdHJlYW0vdHJpY2tmbGl4L3JwdHYvbXNoP3U9cGgmJnJlY29yZGxpc3Q9ZmU1MjkyYjQyYTcyNWE5NzdmMDU1OTQ3Mzg1YjcwOWNjODJiMTZiOWE4N2Y4OGM2YWIzOTAwZDY1ZDBjZGMz',
+            'nbaph': 'aHR0cDovL3BocmFuY2lzMy5kdWNrZG5zLm9yZzovMTIzNC9zdHJlYW0vdHJpY2tmbGl4L25iYXBofG1zaA==',
+            'a2z': 'aHR0cDovL2RlZmF1bHRnZW4uY29tOjMwNTAvbGl2ZS9lbG1hcHBzQGhvdG1haWwuY29tL2VBcTFHTDQ4WFIvNTU4Nzg2LnRz'
         };
 
         // Function to change the stream source
         function changeStream(channel) {
             const videoPlayer = document.getElementById('videoPlayer');
-            const source = videoPlayer.querySelector('source');
-            source.src = streams[channel];
+            const source = document.getElementById('videoSource');
+            // Decode the Base64 URL
+            const url = atob(encodedUrls[channel]);
+            source.src = url;
             videoPlayer.load();
             videoPlayer.play();
         }
