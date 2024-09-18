@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const selectedURL = event.target.dataset.url;
             player.src = selectedURL;
             player.type = selectedURL.endsWith('.m3u8') ? 'application/x-mpegURL' : 'video/mp2t';
+
+            // Refresh player to ensure it starts loading new content
+            player.load();
+            player.play();
         }
     });
 });
