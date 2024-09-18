@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #000;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.channel-list {
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.channel-list div {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.channel-list div:hover {
+    background-color: #555;
+}
+
+#player {
+    flex: 1;
+    height: 60vh; /* Adjust as needed */
+}
