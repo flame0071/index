@@ -18,18 +18,15 @@ body {
     background-color: #333;
     color: #fff;
     padding: 10px;
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
+    overflow-y: auto; /* Ensure the list is scrollable if needed */
+    max-height: 90vh; /* Prevents the list from being too tall */
 }
 
 .channel-list div {
     cursor: pointer;
     padding: 10px;
     border-bottom: 1px solid #444;
-    display: inline-block;
-    width: 100%;
-    box-sizing: border-box;
+    display: block;
 }
 
 .channel-list div:hover {
