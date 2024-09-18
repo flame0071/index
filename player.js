@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoPlayer = document.getElementById('video-player');
     const channelList = document.getElementById('channel-list');
 
-    // Example M3U playlist
-    const m3uPlaylistUrl = 'path/to/your/playlist.m3u';
+    // Your M3U playlist URL
+    const m3uPlaylistUrl = 'https://m3u.ch/pl/0832ddc3f00b6517e0f8510ce3cf6930_bf5d1d5e7a4840262d2a40a414e5d635.m3u';
 
     // Load M3U playlist
     fetch(m3uPlaylistUrl)
