@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPTV Video Player</title>
+    <title>Main IPTV Video Player</title>
     <style>
         body {
             margin: 0;
@@ -14,24 +14,27 @@
             width: 100%;
             height: 70vh; /* Adjust the video player height */
             background-color: black;
+            position: relative;
         }
         video {
             width: 100%;
             height: 100%;
-        }
-        iframe {
             border: none;
-            width: 100%;
-            height: 150px;
         }
-        footer {
-            padding: 10px;
+        .links-container {
             text-align: center;
+            margin-top: 20px;
+        }
+        .links-container a {
+            margin: 0 15px;
+            padding: 10px 20px;
             background-color: #333;
             color: #fff;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .links-container a:hover {
+            background-color: #555;
         }
     </style>
 </head>
@@ -39,21 +42,19 @@
 
     <div class="video-container">
         <video id="videoPlayer" controls>
-            <source id="videoSource" type="application/x-mpegURL">
+            <source src="http://example.com/initial-stream.m3u8" type="application/x-mpegURL">
             Your browser does not support the video tag.
         </video>
     </div>
 
-    <iframe id="channelListFrame" src="channel-list.html"></iframe>
+    <div class="links-container">
+        <a href="streams.html" target="_blank">View Streaming Links</a>
+    </div>
 
-    <footer id="footer">
-        <div id="footer-wrap">
-            <div class="copyright"></div>
-        </div>
-    </footer>
-
-    <!-- Include the external JavaScript file -->
-    <script src="scripts.js"></script>
+    <script src="https://vjs.zencdn.net/7.20.0/video.min.js"></script>
+    <script>
+        const player = videojs('videoPlayer');
+    </script>
 
 </body>
 </html>
