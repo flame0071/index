@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const player = document.getElementById('player');
     const channelList = document.getElementById('channelList');
+    const hls = Hls();
 
     // Channel list data
     const channels = [
@@ -27,12 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
     channelList.addEventListener('click', (event) => {
         if (event.target.tagName === 'DIV') {
             const selectedURL = event.target.dataset.url;
-            player.src = selectedURL;
-            player.type = selectedURL.endsWith('.m3u8') ? 'application/x-mpegURL' : 'video/mp2t';
 
-            // Refresh player to ensure it starts loading new content
-            player.load();
-            player.play();
+            if (Hls.isSupported() && selectedURL.endsWith('.m3u8')) {
+                hls.loadSource(selectedURL);
+                hls.attachMedia(player);
+                hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    player.play();
+                });
+            } else {
+                player.src = selectedURL;
+                player.type = selectedURL.endsWith('.ts') ? 'video/mp2t' : 'application/x-mpegURL';
+                player.load();
+                player.play();
+            }
         }
     });
 });
