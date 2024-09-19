@@ -135,6 +135,11 @@
                 youtubePlayer.style.display = 'block';
                 youtubePlayer.src = url;
                 videoPlayer.style.display = 'none';
+                
+                // Handle fullscreen for mobile devices
+                if (isMobileDevice() && isLandscape()) {
+                    youtubePlayer.requestFullscreen?.();
+                }
             } else {
                 // Stop YouTube stream
                 youtubePlayer.src = "";
@@ -145,6 +150,11 @@
                 var player = videojs('videoPlayer');
                 player.src({ type: 'application/x-mpegURL', src: url });
                 player.play();
+                
+                // Handle fullscreen for mobile devices
+                if (isMobileDevice() && isLandscape()) {
+                    videoPlayer.requestFullscreen?.();
+                }
             }
             toggleChannelList(); // Close the channel list after selecting a stream
         }
@@ -154,6 +164,32 @@
             var button = document.querySelector('.channel-button');
             var isActive = channelList.classList.toggle('active');
             button.setAttribute('aria-expanded', isActive);
+        }
+
+        function isMobileDevice() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        function isLandscape() {
+            return window.innerWidth > window.innerHeight;
+        }
+
+        // Listen for fullscreen changes
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+        function handleFullscreenChange() {
+            if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                // Device is in fullscreen mode
+                if (isMobileDevice() && !isLandscape()) {
+                    // Force landscape mode on mobile devices
+                    screen.orientation.lock('landscape').catch(function(error) {
+                        console.log('Orientation lock failed:', error);
+                    });
+                }
+            }
         }
 
         // Initialize the player with controls and fullscreen toggle
