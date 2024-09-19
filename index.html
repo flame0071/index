@@ -3,53 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPTV Stream Player</title>
+    <title>IPTV Streaming Player</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video-js.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
-        }
-        #player-container {
+            margin: 0;
+            padding: 0;
             display: flex;
-            flex-direction: column;
-            height: 90vh;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
         }
-        #video-player {
-            flex: 1;
+        .player-container {
+            position: relative;
+            width: 640px;
+            height: 360px;
+        }
+        #videoPlayer {
             width: 100%;
-            background-color: black;
+            height: 100%;
         }
-        #channel-list {
-            display: flex;
-            flex-wrap: wrap;
-            overflow-y: auto;
-            border-top: 1px solid #ddd;
-        }
-        .channel {
-            flex: 1 0 20%;
+        .channel-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
             padding: 10px;
-            box-sizing: border-box;
-        }
-        .channel img {
-            max-width: 100%;
-            height: auto;
-        }
-        .folder {
             cursor: pointer;
-            margin-bottom: 10px;
-            font-weight: bold;
+            z-index: 2;
         }
-        .folder-content {
+        .channels {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.8);
             display: none;
-            padding-left: 20px;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .channels.active {
+            display: flex;
+        }
+        .channel-box {
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin: 2px 0;
+        }
+        .channel-box:hover {
+            background-color: rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
 <body>
-    <div id="player-container">
-        <video id="video-player" controls></video>
-        <div id="channel-list"></div>
+    <div class="player-container">
+        <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
+            <source src="" type="application/x-mpegURL">
+        </video>
+        <button class="channel-button" onclick="toggleChannelList()">Channels</button>
+        <div class="channels" id="channelList">
+            <div class="channel-box" onclick="playStream('http://jafupro.com:80/live/David123/David123/65961.ts')">
+                A2Z
+            </div>
+            <div class="channel-box" onclick="playStream('http://defaultgen.com:3050/live/elmapps@hotmail.com/eBq1GL48XR/558784.ts')">
+                Animal Planet
+            </div>
+            <div class="channel-box" onclick="playStream('https://amdlive-ch03-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/chunklist_b3256000_sleng.m3u8')">
+                Arirang
+            </div>
+            <div class="channel-box" onclick="playStream('http://jafupro.com:80/live/David123/David123/65989.ts')">
+                AXN
+            </div>
+            <div class="channel-box" onclick="playStream('http://128.0.104.44:8070/live/F28766/0ee07535/144837.ts')">
+                Kapamilya Online
+            </div>
+            <div class="channel-box" onclick="playStream('https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_5.m3u8?zshijd')">
+                Channel News Asia
+            </div>
+            <div class="channel-box" onclick="playStream('https://cinemaone-abscbn-ono.amagi.tv/index_4.m3u8')">
+                Cinema One
+            </div>
+            <div class="channel-box" onclick="playStream('https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8')">
+                Cinemo
+            </div>
+        </div>
     </div>
 
-    <script src="player.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video.min.js"></script>
+    <script>
+        function playStream(url) {
+            var player = videojs('videoPlayer');
+            player.src({ type: 'application/x-mpegURL', src: url });
+            player.play();
+            toggleChannelList(); // Isara ang channel list pagkatapos mamili
+        }
+
+        function toggleChannelList() {
+            var channelList = document.getElementById('channelList');
+            channelList.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
