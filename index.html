@@ -15,17 +15,17 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #fff; /* Changed to white */
+            background-color: #fff;
         }
         .player-container {
             position: relative;
             width: 640px;
             height: 360px;
-            background-color: #000; /* Ensure the player container background is black for contrast */
-            border-radius: 10px; /* Optional: Add rounded corners for a better look */
-            overflow: hidden; /* Optional: Hide overflow */
+            background-color: #000;
+            border-radius: 10px;
+            overflow: hidden;
         }
-        #videoPlayer {
+        #videoPlayer, #youtubePlayer {
             width: 100%;
             height: 100%;
         }
@@ -51,7 +51,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            background-color: rgba(0, 0, 0, 0.5);
             display: none;
             flex-direction: column;
             align-items: center;
@@ -79,6 +79,9 @@
         .channel-box:hover {
             background-color: rgba(255, 255, 255, 0.3);
         }
+        #youtubePlayer {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +89,8 @@
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
             <source src="" type="application/x-mpegURL">
         </video>
+        <iframe id="youtubePlayer" width="640" height="360" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        
         <button class="channel-button" onclick="toggleChannelList()" aria-expanded="false" aria-controls="channelList">
             <i class="fas fa-th-list"></i>
         </button>
@@ -93,17 +98,14 @@
             <div class="channel-box" onclick="playStream('http://jafupro.com:80/live/David123/David123/65961.ts')">
                 A2Z
             </div>
+            <div class="channel-box" onclick="playStream('https://www.youtube.com/embed/R2paYgXkMuY?autoplay=1', true)">
+                Kapuso
+            </div>
             <div class="channel-box" onclick="playStream('http://defaultgen.com:3050/live/elmapps@hotmail.com/eBq1GL48XR/558784.ts')">
                 Animal Planet
             </div>
             <div class="channel-box" onclick="playStream('https://amdlive-ch03-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/chunklist_b3256000_sleng.m3u8')">
                 Arirang
-            </div>
-            <div class="channel-box" onclick="playStream('http://jafupro.com:80/live/David123/David123/65989.ts')">
-                AXN
-            </div>
-            <div class="channel-box" onclick="playStream('http://128.0.104.44:8070/live/F28766/0ee07535/144837.ts')">
-                Kapamilya Online
             </div>
             <div class="channel-box" onclick="playStream('https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_5.m3u8?zshijd')">
                 Channel News Asia
@@ -119,10 +121,31 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video.min.js"></script>
     <script>
-        function playStream(url) {
-            var player = videojs('videoPlayer');
-            player.src({ type: 'application/x-mpegURL', src: url });
-            player.play();
+        function playStream(url, isYouTube = false) {
+            var videoPlayer = document.getElementById('videoPlayer');
+            var youtubePlayer = document.getElementById('youtubePlayer');
+            
+            if (isYouTube) {
+                // Stop m3u8 stream
+                var player = videojs('videoPlayer');
+                player.pause();
+                player.src({});
+                
+                // Show YouTube iframe and auto-play
+                youtubePlayer.style.display = 'block';
+                youtubePlayer.src = url;
+                videoPlayer.style.display = 'none';
+            } else {
+                // Stop YouTube stream
+                youtubePlayer.src = "";
+                youtubePlayer.style.display = 'none';
+                
+                // Show video.js player and play stream
+                videoPlayer.style.display = 'block';
+                var player = videojs('videoPlayer');
+                player.src({ type: 'application/x-mpegURL', src: url });
+                player.play();
+            }
             toggleChannelList(); // Close the channel list after selecting a stream
         }
 
@@ -136,10 +159,10 @@
         // Initialize the player with controls and fullscreen toggle
         videojs('videoPlayer', {
             controls: true,
-            autoplay: false, // Ensure autoplay is off by default
+            autoplay: false,
             preload: 'auto',
             controlBar: {
-                fullscreenToggle: true // Fullscreen toggle remains enabled
+                fullscreenToggle: true
             }
         });
     </script>
