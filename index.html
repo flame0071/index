@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IPTV Streaming Player</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video-js.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,12 +15,15 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #000;
+            background-color: #fff; /* Changed to white */
         }
         .player-container {
             position: relative;
             width: 640px;
             height: 360px;
+            background-color: #000; /* Ensure the player container background is black for contrast */
+            border-radius: 10px; /* Optional: Add rounded corners for a better look */
+            overflow: hidden; /* Optional: Hide overflow */
         }
         #videoPlayer {
             width: 100%;
@@ -35,22 +39,33 @@
             padding: 10px;
             cursor: pointer;
             z-index: 2;
+            border-radius: 50%;
+            font-size: 20px;
+            text-align: center;
+        }
+        .channel-button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
         }
         .channels {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
             display: none;
             flex-direction: column;
             align-items: center;
             z-index: 1;
             max-height: 200px;
             overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
         }
         .channels.active {
             display: flex;
+            transform: translateY(0);
+        }
+        .channels {
+            transform: translateY(100%);
         }
         .channel-box {
             width: 100%;
@@ -71,7 +86,9 @@
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
             <source src="" type="application/x-mpegURL">
         </video>
-        <button class="channel-button" onclick="toggleChannelList()">Channels</button>
+        <button class="channel-button" onclick="toggleChannelList()" aria-expanded="false" aria-controls="channelList">
+            <i class="fas fa-th-list"></i>
+        </button>
         <div class="channels" id="channelList">
             <div class="channel-box" onclick="playStream('http://jafupro.com:80/live/David123/David123/65961.ts')">
                 A2Z
@@ -106,13 +123,25 @@
             var player = videojs('videoPlayer');
             player.src({ type: 'application/x-mpegURL', src: url });
             player.play();
-            toggleChannelList(); // Isara ang channel list pagkatapos mamili
+            toggleChannelList(); // Close the channel list after selecting a stream
         }
 
         function toggleChannelList() {
             var channelList = document.getElementById('channelList');
-            channelList.classList.toggle('active');
+            var button = document.querySelector('.channel-button');
+            var isActive = channelList.classList.toggle('active');
+            button.setAttribute('aria-expanded', isActive);
         }
+
+        // Initialize the player with controls and fullscreen toggle
+        videojs('videoPlayer', {
+            controls: true,
+            autoplay: false, // Ensure autoplay is off by default
+            preload: 'auto',
+            controlBar: {
+                fullscreenToggle: true // Fullscreen toggle remains enabled
+            }
+        });
     </script>
 </body>
 </html>
