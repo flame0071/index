@@ -1,10 +1,11 @@
 const channels = [
-    { name: "TV5", url: "https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_qp.m3u8" },
     { name: "Cinema One", url: "https://cinemaone-abscbn-ono.amagi.tv/index_4.m3u8" },
     { name: "Cinemo", url: "https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8" },
     { name: "Kapuso Stream", url: "https://www.youtube.com/embed/videoseries?list=PLyTidGpwe3eqxcNoMsRZHhJq_cBRU04xu", isYouTube: true },
     { name: "Channel News Asia", url: "https://livevideo.mediacorp.sg/CHANNELNEWSASIA/master.m3u8" },
+    // Mga bagong channels na dinagdag
     { name: "A2Z", url: "http://starshare.live:8080/live/Pradeep/Pradeep/151010.m3u8" },
+    { name: "TV5", url: "https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_qp.m3u8" },
     { name: "Animal Planet", url: "http://starshare.live:8080/live/Pradeep/Pradeep/151008.m3u8" },
     { name: "AXN", url: "http://starshare.live:8080/live/Pradeep/Pradeep/151036.m3u8" },
     { name: "ANC", url: "https://ancglobal-abscbn-ono.amagi.tv/playlist720_p.m3u8" },
