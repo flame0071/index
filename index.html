@@ -95,26 +95,17 @@
             <i class="fas fa-th-list"></i>
         </button>
         <div class="channels" id="channelList">
-            <div class="channel-box" onclick="playStream('http://jafupro.com:80/live/David123/David123/65961.ts')">
-                A2Z
-            </div>
-            <div class="channel-box" onclick="playStream('https://www.youtube.com/embed/R2paYgXkMuY?autoplay=1', true)">
-                Kapuso
-            </div>
-            <div class="channel-box" onclick="playStream('http://defaultgen.com:3050/live/elmapps@hotmail.com/eBq1GL48XR/558784.ts')">
-                Animal Planet
-            </div>
-            <div class="channel-box" onclick="playStream('https://amdlive-ch03-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/chunklist_b3256000_sleng.m3u8')">
-                Arirang
-            </div>
-            <div class="channel-box" onclick="playStream('https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_5.m3u8?zshijd')">
-                Channel News Asia
-            </div>
             <div class="channel-box" onclick="playStream('https://cinemaone-abscbn-ono.amagi.tv/index_4.m3u8')">
                 Cinema One
             </div>
             <div class="channel-box" onclick="playStream('https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8')">
                 Cinemo
+            </div>
+            <div class="channel-box" onclick="playStream('https://www.youtube.com/embed/videoseries?list=PLyTidGpwe3eqxcNoMsRZHhJq_cBRU04xu', true)">
+                Kapuso Stream
+            </div>
+            <div class="channel-box" onclick="playStream('https://livevideo.mediacorp.sg/CHANNELNEWSASIA/master.m3u8')">
+                Channel News Asia
             </div>
         </div>
     </div>
@@ -131,9 +122,9 @@
                 player.pause();
                 player.src({});
                 
-                // Show YouTube iframe and auto-play
+                // Ensure autoplay in YouTube embed
                 youtubePlayer.style.display = 'block';
-                youtubePlayer.src = url;
+                youtubePlayer.src = url.includes('?') ? `${url}&autoplay=1` : `${url}?autoplay=1`;
                 videoPlayer.style.display = 'none';
                 
                 // Handle fullscreen for mobile devices
