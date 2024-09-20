@@ -3,187 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPTV Streaming Player</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video-js.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>IPTV Video Player</title>
+    <!-- Include video.js CSS -->
+    <link href="https://vjs.zencdn.net/7.21.0/video-js.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .video-container {
+            width: 100%;
+            height: 70vh; /* Adjust the video player height */
+            background-color: black;
+        }
+        .video-js {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .channel-list {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            overflow-x: auto;
+            padding: 10px;
+            background-color: #333;
+            justify-content: space-around;
+            gap: 10px;
+        }
+        .channel {
+            flex: 0 0 auto;
             background-color: #fff;
-        }
-        .player-container {
-            position: relative;
-            width: 640px;
-            height: 360px;
-            background-color: #000;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        #videoPlayer, #youtubePlayer {
-            width: 100%;
-            height: 100%;
-        }
-        .channel-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: none;
             padding: 10px;
-            cursor: pointer;
-            z-index: 2;
-            border-radius: 50%;
-            font-size: 20px;
+            border-radius: 5px;
+            width: 120px; /* Adjusted width for better visibility */
             text-align: center;
         }
-        .channel-button:hover {
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-        .channels {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            z-index: 1;
-            max-height: 200px;
-            overflow-y: auto;
-            transition: transform 0.3s ease-in-out;
-        }
-        .channels.active {
-            display: flex;
-            transform: translateY(0);
-        }
-        .channels {
-            transform: translateY(100%);
-        }
-        .channel-box {
+        .channel img {
             width: 100%;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            color: white;
-            background-color: rgba(255, 255, 255, 0.1);
-            margin: 2px 0;
+            height: 80px; /* Control the image size */
+            object-fit: contain;
+            border-radius: 5px;
         }
-        .channel-box:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-        #youtubePlayer {
-            display: none;
+        .channel p {
+            margin: 10px 0 0;
+            font-size: 14px;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <div class="player-container">
+    <div class="video-container">
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
             <source src="" type="application/x-mpegURL">
         </video>
-        <iframe id="youtubePlayer" width="640" height="360" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        
-        <button class="channel-button" onclick="toggleChannelList()" aria-expanded="false" aria-controls="channelList">
-            <i class="fas fa-th-list"></i>
-        </button>
-        <div class="channels" id="channelList">
-            <div class="channel-box" onclick="playStream('https://cinemaone-abscbn-ono.amagi.tv/index_4.m3u8')">
-                Cinema One
-            </div>
-            <div class="channel-box" onclick="playStream('https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8')">
-                Cinemo
-            </div>
-            <div class="channel-box" onclick="playStream('https://www.youtube.com/embed/videoseries?list=PLyTidGpwe3eqxcNoMsRZHhJq_cBRU04xu', true)">
-                Kapuso Stream
-            </div>
-            <div class="channel-box" onclick="playStream('https://livevideo.mediacorp.sg/CHANNELNEWSASIA/master.m3u8')">
-                Channel News Asia
-            </div>
+    </div>
+    <div class="channel-list">
+        <div class="channel" onclick="playStream('https://cinemaone-abscbn-ono.amagi.tv/index_4.m3u8')">
+            <img src="logo1.png" alt="Cinema One">
+            <p>Cinema One</p>
+        </div>
+        <div class="channel" onclick="playStream('https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8')">
+            <img src="logo2.png" alt="Cinemo">
+            <p>Cinemo</p>
+        </div>
+        <div class="channel" onclick="playStream('https://www.youtube.com/embed/videoseries?list=PLyTidGpwe3eqxcNoMsRZHhJq_cBRU04xu', true)">
+            <img src="logo3.png" alt="Kapuso Stream">
+            <p>Kapuso Stream</p>
+        </div>
+        <div class="channel" onclick="playStream('https://livevideo.mediacorp.sg/CHANNELNEWSASIA/master.m3u8')">
+            <img src="logo4.png" alt="Channel News Asia">
+            <p>Channel News Asia</p>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.20.3/video.min.js"></script>
+    <script src="https://vjs.zencdn.net/7.21.0/video.min.js"></script>
     <script>
         function playStream(url, isYouTube = false) {
             var videoPlayer = document.getElementById('videoPlayer');
-            var youtubePlayer = document.getElementById('youtubePlayer');
-            
             if (isYouTube) {
-                var player = videojs('videoPlayer');
-                player.pause();
-                player.src({});
-                
-                youtubePlayer.style.display = 'block';
-                youtubePlayer.src = url.includes('?') ? `${url}&autoplay=1` : `${url}?autoplay=1`;
-                videoPlayer.style.display = 'none';
-                
-                // Handle fullscreen for mobile devices
-                if (isMobileDevice() && isLandscape()) {
-                    youtubePlayer.requestFullscreen?.();
-                }
+                videoPlayer.src = url.includes('?') ? `${url}&autoplay=1` : `${url}?autoplay=1`;
             } else {
-                youtubePlayer.src = "";
-                youtubePlayer.style.display = 'none';
-                
-                videoPlayer.style.display = 'block';
-                var player = videojs('videoPlayer');
-                player.src({ type: 'application/x-mpegURL', src: url });
-                player.play();
-                
-                // Handle fullscreen for mobile devices
-                if (isMobileDevice() && isLandscape()) {
-                    videoPlayer.requestFullscreen?.();
-                }
+                videoPlayer.src = url;
             }
-            toggleChannelList();
+            videoPlayer.play();
         }
-
-        function toggleChannelList() {
-            var channelList = document.getElementById('channelList');
-            var button = document.querySelector('.channel-button');
-            var isActive = channelList.classList.toggle('active');
-            button.setAttribute('aria-expanded', isActive);
-        }
-
-        function isMobileDevice() {
-            return /Mobi|Android/i.test(navigator.userAgent);
-        }
-
-        function isLandscape() {
-            return window.innerWidth > window.innerHeight;
-        }
-
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-        document.addEventListener('msfullscreenchange', handleFullscreenChange);
-
-        function handleFullscreenChange() {
-            if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-                if (isMobileDevice() && !isLandscape()) {
-                    screen.orientation.lock('landscape').catch(function(error) {
-                        console.log('Orientation lock failed:', error);
-                    });
-                }
-            }
-        }
-
-        videojs('videoPlayer', {
-            controls: true,
-            autoplay: false,
-            preload: 'auto',
-            controlBar: {
-                fullscreenToggle: true
-            }
-        });
     </script>
 </body>
 </html>
