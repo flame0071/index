@@ -20,3 +20,26 @@ const channels = [
     { name: "ANC", url: "https://ancglobal-abscbn-ono.amagi.tv/playlist720_p.m3u8" },
     { name: "Kapuso Stream", url: "https://www.youtube.com/embed/example", isYouTube: true }
 ];
+
+function loadChannels() {
+    const channelList = document.getElementById('channelList');
+    channels.forEach(channel => {
+        const channelDiv = document.createElement('div');
+        channelDiv.className = 'channel';
+        channelDiv.onclick = () => changeStream(channel.url, channel.isYouTube);
+        channelDiv.innerHTML = `<p>${channel.name}</p>`;
+        channelList.appendChild(channelDiv);
+    });
+}
+
+function changeStream(url, isYouTube = false) {
+    const player = videojs('videoPlayer');
+    if (isYouTube) {
+        // Handle YouTube streams if needed
+    } else {
+        player.src({ src: url, type: 'application/x-mpegURL' });
+        player.play();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadChannels);
