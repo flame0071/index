@@ -63,29 +63,5 @@
 
     <script src="https://vjs.zencdn.net/7.21.0/video.min.js"></script>
     <script src="channels.js"></script>
-    <script>
-        function changeStream(url, isYouTube = false) {
-            const player = videojs('videoPlayer');
-            if (isYouTube) {
-                // Handle YouTube streams if needed
-            } else {
-                player.src({ src: url, type: 'application/x-mpegURL' });
-                player.play();
-            }
-        }
-
-        function loadChannels() {
-            const channelList = document.getElementById('channelList');
-            channels.forEach(channel => {
-                const channelDiv = document.createElement('div');
-                channelDiv.className = 'channel';
-                channelDiv.onclick = () => changeStream(channel.url, channel.isYouTube);
-                channelDiv.innerHTML = `<p>${channel.name}</p>`;
-                channelList.appendChild(channelDiv);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', loadChannels);
-    </script>
 </body>
 </html>
