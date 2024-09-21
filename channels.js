@@ -1,62 +1,22 @@
 const channels = [
-    {
-        name: 'TV5',
-        logo: 'https://static.wikia.nocookie.net/tv5network/images/b/b9/TV5_logo_2013.png',
-        stream: 'https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_qp.m3u8'
-    },
-    {
-        name: 'A2Z',
-        logo: 'https://static.wikia.nocookie.net/russel/images/8/85/A2Z_Channel_11_without_Channel_11_3D_Logo_2020.png',
-        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.m3u8'
-    },
-    {
-        name: 'BUKO',
-        logo: 'https://static.wikia.nocookie.net/logopedia/images/6/67/BuKo_Channel_(2021-.n.v.).png',
-        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558780.m3u8'
-    },
-    {
-        name: 'HITS HD',
-        logo: 'https://www.hitstv.com/assets/hits.png',
-        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558765.m3u8'
-    },
-    {
-        name: 'One News',
-        logo: 'https://static.wikia.nocookie.net/russel/images/5/53/One_News_Logo_2020.png',
-        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558789.m3u8'
-    },
-    {
-        name: 'NHK World',
-        logo: 'https://logotyp.us/file/nhk.svg',
-        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558790.m3u8'
-    },
-    {
-        name: 'Kapamilya',
-        logo: 'https://static.wikia.nocookie.net/philippinetelevision/images/c/c5/Kapamilya_Online_Live_Logo_2020.png/revision/latest/scale-to-width-down/200?cb=20240318102904',
-        stream: 'http://filex.tv:8080/live/gtr/gtr/290851.m3u8'
-    },
-    {
-        name: 'AXN',
-        logo: 'https://www.logo.wine/a/logo/AXN_(Portuguese_TV_channel)/AXN_(Portuguese_TV_channel)-Logo.wine.svg',
-        stream: 'http://filex.tv:8080/live/gtr/gtr/290856.m3u8'
-    },
-    {
-        name: 'GMA Life TV',
-        logo: 'https://static.wikia.nocookie.net/logopedia/images/7/70/Gma-life-tv-first-logo.jpg/revision/latest/scale-to-width-down/250?cb=20180813090909',
-        stream: 'http://filex.tv:8080/live/gtr/gtr/290871.m3u8'
-    },
-    {
-        name: 'GMA News TV',
-        logo: 'https://static.wikia.nocookie.net/logopedia/images/c/cc/GMA_News_TV_2011_logo_animation.png/revision/latest/scale-to-width-down/160?cb=20211211102116',
-        stream: 'http://filex.tv:8080/live/gtr/gtr/290872.m3u8'
-    },
-    {
-        name: 'GMA Pinoy TV',
-        logo: 'https://content.osn.com/logo/channel/cropped/GMA.png',
-        stream: 'http://filex.tv:8080/live/gtr/gtr/290873.m3u8'
-    },
-    {
-        name: 'Hits Movies',
-        logo: 'https://static.wikia.nocookie.net/logos/images/1/16/HITS_Movies_logo.png/revision/latest/scale-to-width-down/180?cb=20220323123229&path-prefix=vi',
-        stream: 'http://filex.tv:8080/live/gtr/gtr/290875.m3u8'
-    }
+    { name: "A2Z", url: "http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.m3u8" },
+    { name: "BUKO", url: "http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558780.m3u8" },
+    { name: "HITS HD", url: "http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558765.m3u8" },
+    { name: "MPTV", url: "http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558764.m3u8" },
+    { name: "Kix", url: "http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558763.m3u8" },
+    { name: "One News", url: "http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558757.m3u8" },
+    { name: "One Sport+", url: "http://starshare.live:8080/live/Pradeep/Pradeep/150981.m3u8" },
+    { name: "PBA RUSH", url: "http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558787.m3u8" },
+    { name: "Tap Action Flix", url: "http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558748.m3u8" },
+    { name: "Tap Edge", url: "http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558747.m3u8" },
+    { name: "Tap Sports", url: "http://starshare.live:8080/live/Pradeep/Pradeep/150969.m3u8" },
+    { name: "VIVA Cinema", url: "http://starshare.live:8080/live/Pradeep/Pradeep/151090.m3u8" },
+    { name: "Kapamilya Online", url: "http://128.0.104.44:8070/live/GenIptv2023/XkgMCdR7PJzShK5m/144837.ts" },
+    { name: "Arirang", url: "https://amdlive-ch03-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/chunklist_b3256000_sleng.m3u8" },
+    { name: "TV5", url: "https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_qp.m3u8" },
+    { name: "BBC World News", url: "https://cdn4.skygo.mn/live/disk1/BBC_News/HLSv3-FTA/BBC_News-avc1_1499968=1-mp4a_208000_eng=2.m3u8" },
+    { name: "CineMo!", url: "https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8" },
+    { name: "CinemaOne", url: "https://cinemaone-abscbn-ono.amagi.tv/index_4.m3u8" },
+    { name: "ANC", url: "https://ancglobal-abscbn-ono.amagi.tv/playlist720_p.m3u8" },
+    { name: "Kapuso Stream", url: "https://www.youtube.com/embed/example", isYouTube: true }
 ];
