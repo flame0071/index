@@ -55,51 +55,18 @@
     <div class="video-container">
         <!-- video.js player -->
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
-            <source src="http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.m3u8" type="application/x-mpegURL">
+            <source src="" type="application/x-mpegURL">
             Your browser does not support the video tag.
         </video>
     </div>
 
-    <div class="channel-list" id="channelList"></div>
+    <div class="channel-list" id="channelList">
+        <!-- Channel list will be dynamically loaded here -->
+    </div>
 
     <!-- Include video.js library -->
     <script src="https://vjs.zencdn.net/7.21.0/video.min.js"></script>
-    <!-- Include the channel.js file -->
-    <script src="channel.js"></script>
-    <script>
-        const player = videojs('videoPlayer');
-
-        // Dynamically load channels
-        const channelListContainer = document.getElementById('channelList');
-
-        function changeStream(channelKey) {
-            const channel = channels[channelKey];
-            player.src({ src: channel.stream, type: 'application/x-mpegURL' });
-        }
-
-        // Populate channel list
-        function loadChannels() {
-            Object.keys(channels).forEach(channelKey => {
-                const channel = channels[channelKey];
-                const channelDiv = document.createElement('div');
-                channelDiv.className = 'channel';
-                channelDiv.onclick = () => changeStream(channelKey);
-
-                const img = document.createElement('img');
-                img.src = channel.logo;
-                img.alt = channel.name;
-
-                const p = document.createElement('p');
-                p.textContent = channel.name;
-
-                channelDiv.appendChild(img);
-                channelDiv.appendChild(p);
-                channelListContainer.appendChild(channelDiv);
-            });
-        }
-
-        // Load the channels when the page loads
-        window.onload = loadChannels;
-    </script>
+    <!-- Load external channels and player script -->
+    <script src="channels.js"></script>
 </body>
 </html>
