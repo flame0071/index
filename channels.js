@@ -1,35 +1,64 @@
-const channels = [
-    { name: "Cinema One", url: "https://cinemaone-abscbn-ono.amagi.tv/index_4.m3u8" },
-    { name: "Cinemo", url: "https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8" },
-    { name: "Kapuso Stream", url: "https://www.youtube.com/embed/videoseries?list=PLyTidGpwe3eqxcNoMsRZHhJq_cBRU04xu", isYouTube: true },
-    { name: "Channel News Asia", url: "https://livevideo.mediacorp.sg/CHANNELNEWSASIA/master.m3u8" },
-    // Mga bagong channels na dinagdag
-    { name: "A2Z", url: "http://starshare.live:8080/live/Pradeep/Pradeep/151010.m3u8" },
-    { name: "TV5", url: "https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_qp.m3u8" },
-    { name: "Animal Planet", url: "http://starshare.live:8080/live/Pradeep/Pradeep/151008.m3u8" },
-    { name: "AXN", url: "http://starshare.live:8080/live/Pradeep/Pradeep/151036.m3u8" },
-    { name: "ANC", url: "https://ancglobal-abscbn-ono.amagi.tv/playlist720_p.m3u8" },
-    { name: "GMA Life", url: "http://starshare.live:8080/live/Pradeep/Pradeep/151026.m3u8" },
-    { name: "GMA News", url: "http://starshare.live:8080/live/Pradeep/Pradeep/151020.m3u8" },
-    { name: "GMA Pinoy", url: "http://starshare.live:8080/live/Pradeep/Pradeep/19253.m3u8" },
-    { name: "CNN", url: "https://turnerlive.warnermediacdn.com/hls/live/586495/cnngo/cnn_slate/VIDEO_0_3564000.m3u8" },
-    { name: "Discovery Asia", url: "https://cdn1.skygo.mn/live/disk1/Discovery_Asia/HLS-FTA/Discovery_Asia.m3u8" },
-    { name: "Wild Planet", url: "https://d3c7duantorcb1.cloudfront.net/v1/manifest/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-jpfvel38m2ce0-prod/75c6cfbb-5c9e-4bcc-a6d4-38c6f8f63e1f/3.m3u8" },
-    { name: "Myx", url: "https://myxnola-abscbn-ono.amagi.tv/index_4.m3u8" },
-    { name: "NHK World", url: "https://nhkwlive-ojp.akamaized.net/hls/live/2003459/nhkwlive-ojp-en/index.m3u8" },
-    { name: "K-Movies", url: "https://7732c5436342497882363a8cd14ceff4.mediatailor.us-east-1.amazonaws.com/v1/master/04fd913bb278d8775298c26fdca9d9841f37601f/Plex_NewMovies/playlist.m3u8" }
-];
+// channel.js
 
-function populateChannelList() {
-    const channelList = document.getElementById('channelList');
-    channels.forEach(channel => {
-        const channelBox = document.createElement('div');
-        channelBox.className = 'channel-box';
-        channelBox.textContent = channel.name;
-        channelBox.onclick = () => playStream(channel.url, channel.isYouTube);
-        channelList.appendChild(channelBox);
-    });
-}
-
-// Call this function to populate the channel list on page load
-document.addEventListener('DOMContentLoaded', populateChannelList);
+const channels = {
+    'A2Z': {
+        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.m3u8',
+        logo: 'https://static.wikia.nocookie.net/russel/images/8/85/A2Z_Channel_11_without_Channel_11_3D_Logo_2020.png/revision/latest/scale-to-width-down/270?cb=20231101144828',
+        name: 'A2Z'
+    },
+    'BUKO': {
+        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558780.m3u8',
+        logo: 'https://static.wikia.nocookie.net/logopedia/images/6/67/BuKo_Channel_(2021-.n.v.).png/revision/latest/scale-to-width-down/200?cb=20210720055409',
+        name: 'BUKO'
+    },
+    'HITS HD': {
+        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558765.m3u8',
+        logo: 'https://www.hitstv.com/assets/hits.png',
+        name: 'HITS HD'
+    },
+    'MPTV': {
+        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558764.m3u8',
+        logo: 'http://www.satlitetv.com/wp-content/uploads/2024/05/xMPTV.png.pagespeed.ic.P4eiADsK9O.png',
+        name: 'MPTV'
+    },
+    'Kix': {
+        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558763.m3u8',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/KIX_logo.svg',
+        name: 'Kix'
+    },
+    'One News': {
+        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558757.m3u8',
+        logo: 'https://static.wikia.nocookie.net/russel/images/5/53/One_News_Logo_2020.png/revision/latest/scale-to-width-down/300?cb=20230428021352',
+        name: 'One News'
+    },
+    'One Sport+': {
+        stream: 'http://starshare.live:8080/live/Pradeep/Pradeep/150981.m3u8',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/e/ec/OneSportsPlus_logo.svg',
+        name: 'One Sport+'
+    },
+    'PBA RUSH': {
+        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558787.m3u8',
+        logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/cd/PBA_Rush_logo.png/220px-PBA_Rush_logo.png',
+        name: 'PBA RUSH'
+    },
+    'Tap Action Flix': {
+        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558748.m3u8',
+        logo: 'https://www.lyngsat.com/logo/tv/tt/tap-action-flix-ph.png',
+        name: 'Tap Action Flix'
+    },
+    'Tap Edge': {
+        stream: 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558747.m3u8',
+        logo: 'https://static.wikia.nocookie.net/logopedia/images/c/cd/TAP_Edge-1_logo.png/revision/latest?cb=20210901164013',
+        name: 'Tap Edge'
+    },
+    'Tap Sports': {
+        stream: 'http://starshare.live:8080/live/Pradeep/Pradeep/150969.m3u8',
+        logo: 'https://static.wikia.nocookie.net/russel/images/8/85/TAP_Sports_Logo_2020.png/revision/latest/scale-to-width-down/300?cb=20220402065111',
+        name: 'Tap Sports'
+    },
+    'VIVA Cinema': {
+        stream: 'http://starshare.live:8080/live/Pradeep/Pradeep/151090.m3u8',
+        logo: 'https://static.wikia.nocookie.net/logopedia/images/8/8c/VivaCinemaLogo.png/revision/latest/scale-to-width-down/250?cb=20211206092842',
+        name: 'VIVA Cinema'
+    }
+};
