@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IPTV Video Player</title>
-    <!-- Include video.js CSS -->
     <link href="https://vjs.zencdn.net/7.21.0/video-js.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: #f4f4f4;
         }
         .video-container {
@@ -20,6 +20,18 @@
         .video-js {
             width: 100% !important;
             height: 100% !important;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            color: white;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        #error {
+            color: red;
+            text-align: center;
+            display: none;
         }
         .channel-list {
             display: flex;
@@ -36,6 +48,15 @@
             border-radius: 5px;
             width: 120px;
             text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .channel:hover {
+            transform: scale(1.05);
+            background-color: #eaeaea;
+        }
+        .channel.selected {
+            border: 2px solid #007BFF;
         }
         .channel img {
             width: 100%;
@@ -48,25 +69,101 @@
             font-size: 14px;
             color: #333;
         }
+        @media (max-width: 600px) {
+            .channel-list {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .channel {
+                width: 80px;
+            }
+        }
     </style>
 </head>
 <body>
 
+    <h2 id="currentChannel" style="text-align: center;">Current Channel: None</h2>
+    <input type="text" id="searchBar" placeholder="Search channels..." oninput="filterChannels()" style="width: 100%; margin: 20px auto; padding: 10px;">
     <div class="video-container">
-        <!-- video.js player -->
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
             <source src="" type="application/x-mpegURL">
             Your browser does not support the video tag.
         </video>
+        <div id="loading">Loading...</div>
+        <div id="error">Error loading stream. Please try another channel.</div>
     </div>
 
-    <div class="channel-list" id="channelList">
-        <!-- Channel list will be dynamically loaded here -->
-    </div>
+    <div class="channel-list" id="channelList"></div>
 
-    <!-- Include video.js library -->
     <script src="https://vjs.zencdn.net/7.21.0/video.min.js"></script>
-    <!-- Load external channels and player script -->
-    <script src="channels.js"></script>
+    <script src="https://github.com/flame0071/index/blob/main/channels.js"></script> <!-- Update this path -->
+    <script>
+        const player = videojs('videoPlayer');
+        let currentChannel = 'None';
+
+        function loadChannels() {
+            const channelList = document.getElementById('channelList');
+            channels.forEach(channel => {
+                const channelDiv = document.createElement('div');
+                channelDiv.className = 'channel';
+                channelDiv.onclick = () => changeStream(channel.name);
+                channelDiv.innerHTML = `<img src="${channel.logo}" alt="${channel.name}"><p>${channel.name}</p>`;
+                channelList.appendChild(channelDiv);
+            });
+        }
+
+        function changeStream(channelName) {
+            const channel = channels.find(c => c.name === channelName);
+            if (!channel) {
+                console.error(`Channel ${channelName} not found`);
+                return;
+            }
+
+            currentChannel = channelName;
+            document.getElementById('currentChannel').innerText = `Current Channel: ${currentChannel}`;
+
+            document.querySelectorAll('.channel').forEach(c => c.classList.remove('selected'));
+            document.querySelector(`.channel:contains(${channelName})`).classList.add('selected');
+
+            console.log(`Loading stream for: ${channel.src}`);
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+
+            player.src({ src: channel.src, type: 'application/x-mpegURL' });
+            player.play().then(() => {
+                console.log('Playback started');
+            }).catch(error => {
+                console.error('Error attempting to play:', error);
+                document.getElementById('error').style.display = 'block';
+            });
+
+            player.on('waiting', function() {
+                console.log('Player is waiting for data...');
+                document.getElementById('loading').style.display = 'block';
+            });
+
+            player.on('playing', function() {
+                console.log('Playback is playing');
+                document.getElementById('loading').style.display = 'none';
+            });
+
+            player.on('error', function() {
+                console.error('Player encountered an error:', player.error());
+                document.getElementById('error').style.display = 'block';
+            });
+        }
+
+        function filterChannels() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const channelsDivs = document.querySelectorAll('.channel');
+            channelsDivs.forEach(channel => {
+                const name = channel.querySelector('p').innerText.toLowerCase();
+                channel.style.display = name.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        // Load channels on startup
+        loadChannels();
+    </script>
 </body>
 </html>
