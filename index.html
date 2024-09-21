@@ -35,12 +35,7 @@
             border-radius: 5px;
             width: 120px; 
             text-align: center;
-        }
-        .channel img {
-            width: 100%;
-            height: 80px; 
-            object-fit: contain;
-            border-radius: 5px;
+            cursor: pointer;
         }
         .channel p {
             margin: 10px 0 0;
@@ -52,12 +47,6 @@
                 width: 80px; 
                 font-size: 12px; 
             }
-            .channel img {
-                height: 60px; 
-            }
-            .video-container {
-                height: 40vh; 
-            }
         }
     </style>
 </head>
@@ -65,7 +54,7 @@
 
     <div class="video-container">
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
-            <source src="http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.m3u8" type="application/x-mpegURL">
+            <source src="" type="application/x-mpegURL">
             Your browser does not support the video tag.
         </video>
     </div>
@@ -75,32 +64,28 @@
     <script src="https://vjs.zencdn.net/7.21.0/video.min.js"></script>
     <script src="channels.js"></script>
     <script>
-        const player = videojs('videoPlayer');
-
-        function changeStream(stream) {
-            player.src({
-                src: stream,
-                type: 'application/x-mpegURL'
-            });
-            player.play();
+        function changeStream(url, isYouTube = false) {
+            const player = videojs('videoPlayer');
+            if (isYouTube) {
+                // Handle YouTube streams if needed
+            } else {
+                player.src({ src: url, type: 'application/x-mpegURL' });
+                player.play();
+            }
         }
 
-        // Initialize channels
-        function initChannels() {
+        function loadChannels() {
             const channelList = document.getElementById('channelList');
             channels.forEach(channel => {
                 const channelDiv = document.createElement('div');
                 channelDiv.className = 'channel';
-                channelDiv.onclick = () => changeStream(channel.stream);
-                channelDiv.innerHTML = `
-                    <img src="${channel.logo}" alt="${channel.name}">
-                    <p>${channel.name}</p>
-                `;
+                channelDiv.onclick = () => changeStream(channel.url, channel.isYouTube);
+                channelDiv.innerHTML = `<p>${channel.name}</p>`;
                 channelList.appendChild(channelDiv);
             });
         }
 
-        initChannels();
+        document.addEventListener('DOMContentLoaded', loadChannels);
     </script>
 </body>
 </html>
