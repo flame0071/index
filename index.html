@@ -5,63 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IPTV Video Player</title>
     <link href="https://vjs.zencdn.net/7.21.0/video-js.css" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-        .video-container {
-            width: 100%;
-            height: 70vh; 
-            background-color: black;
-        }
-        .video-js {
-            width: 100% !important;
-            height: 100% !important;
-        }
-        .channel-list {
-            display: flex;
-            overflow-x: auto;
-            padding: 10px;
-            background-color: #333;
-            justify-content: space-around;
-            gap: 10px;
-        }
-        .channel {
-            flex: 0 0 auto;
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            width: 120px; 
-            text-align: center;
-            cursor: pointer;
-        }
-        .channel p {
-            margin: 10px 0 0;
-            font-size: 14px;
-            color: #333;
-        }
-        @media only screen and (max-width: 600px) {
-            .channel {
-                width: 80px; 
-                font-size: 12px; 
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your external CSS file -->
 </head>
 <body>
 
     <div class="video-container">
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
-            <source src="" type="application/x-mpegURL">
+            <source src="http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.m3u8" type="application/x-mpegURL">
             Your browser does not support the video tag.
         </video>
     </div>
 
-    <div class="channel-list" id="channelList"></div>
+    <div class="channel-list" id="channelList">
+        <!-- Channel list will be dynamically loaded from channels.js -->
+    </div>
+
+    <iframe id="youtubePlayer" style="display:none; width:100%; height:70vh;" frameborder="0" allowfullscreen></iframe>
 
     <script src="https://vjs.zencdn.net/7.21.0/video.min.js"></script>
-    <script src="channels.js"></script>
+    <script src="channels.js"></script> <!-- Load channels.js for handling the channel list and logic -->
 </body>
 </html>
