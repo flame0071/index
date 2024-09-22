@@ -104,19 +104,22 @@
 
         function changeStream(channel) {
             const sources = {
-                'A2Z': 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.ts',
-                'BUKO': 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558780.ts',
+                'A2Z': 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.m3u8',
+                'BUKO': 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558780.m3u8',
                 'Kapamilya': 'http://filex.tv:8080/live/gtr/gtr/290851.m3u8',
-                'AXN': 'http://filex.tv:8080/live/gtr/gtr/290856.ts',
-                'GMA Life TV': 'http://filex.tv:8080/live/gtr/gtr/290871.ts',
+                'AXN': 'http://filex.tv:8080/live/gtr/gtr/290856.m3u8',
+                'GMA Life TV': 'http://filex.tv:8080/live/gtr/gtr/290871.m3u8',
                 'GMA News TV': 'http://filex.tv:8080/live/gtr/gtr/290872.m3u8',
                 'GMA Pinoy TV': 'http://filex.tv:8080/live/gtr/gtr/290873.m3u8',
                 'Hits Movies': 'http://filex.tv:8080/live/gtr/gtr/290875.m3u8'
             };
 
+            // Determine if it's a .ts or .m3u8 stream
+            const type = sources[channel].endsWith('.ts') ? 'video/mp2t' : 'application/x-mpegURL';
+
             player.src({
                 src: sources[channel],
-                type: 'application/x-mpegURL'
+                type: type
             });
             player.play();
         }
