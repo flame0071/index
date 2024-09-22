@@ -3,126 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPTV Video Player</title>
-    <!-- Include video.js CSS -->
-    <link href="https://vjs.zencdn.net/7.21.0/video-js.css" rel="stylesheet">
+    <title>Video Player</title>
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet"/>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-        .video-container {
-            width: 100%;
-            height: 70vh; /* Adjust the video player height */
-            background-color: black;
-        }
-        .video-js {
-            width: 100% !important;
-            height: 100% !important;
-        }
-        .channel-list {
-            display: flex;
-            overflow-x: auto;
-            padding: 10px;
-            background-color: #333;
-            justify-content: space-around;
-            gap: 10px;
-        }
-        .channel {
-            flex: 0 0 auto;
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            width: 120px; /* Adjusted width for better visibility */
-            text-align: center;
-        }
-        .channel img {
-            width: 100%;
-            height: 80px; /* Control the image size */
-            object-fit: contain;
-            border-radius: 5px;
-        }
-        .channel p {
-            margin: 10px 0 0;
-            font-size: 14px;
-            color: #333;
+        #video-container {
+            max-width: 600px;
+            margin: auto;
         }
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <!-- video.js player -->
-        <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto">
-            <source src="http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.m3u8" type="application/x-mpegURL">
-            Your browser does not support the video tag.
-        </video>
+<div id="video-container">
+    <video
+        id="video-player"
+        class="video-js vjs-default-skin"
+        controls
+        preload="auto"
+        width="600"
+        height="300">
+        <source src="" type="application/dash+xml" id="video-source"/>
+    </video>
+    <div>
+        <button onclick="loadVideo(0)">Load Video 1</button>
+        <button onclick="loadVideo(1)">Load Video 2</button>
+        <button onclick="loadVideo(2)">Load Video 3</button>
+        <button onclick="loadVideo(3)">Load Video 4</button>
+        <button onclick="loadVideo(4)">Load Video 5</button>
+        <button onclick="loadVideo(5)">Load Video 6</button>
     </div>
+</div>
 
-    <div class="channel-list">
-        <!-- Existing Channels -->
-        <div class="channel" onclick="changeStream('A2Z')">
-            <img src="https://static.wikia.nocookie.net/russel/images/8/85/A2Z_Channel_11_without_Channel_11_3D_Logo_2020.png/revision/latest/scale-to-width-down/270?cb=20231101144828" alt="A2Z">
-            <p>A2Z</p>
-        </div>
-        <div class="channel" onclick="changeStream('BUKO')">
-            <img src="https://static.wikia.nocookie.net/logopedia/images/6/67/BuKo_Channel_(2021-.n.v.).png/revision/latest/scale-to-width-down/200?cb=20210720055409" alt="BUKO">
-            <p>BUKO</p>
-        </div>
-        <!-- New Channels -->
-        <div class="channel" onclick="changeStream('Kapamilya')">
-            <img src="https://static.wikia.nocookie.net/philippinetelevision/images/c/c5/Kapamilya_Online_Live_Logo_2020.png/revision/latest/scale-to-width-down/200?cb=20240318102904" alt="Kapamilya">
-            <p>Kapamilya</p>
-        </div>
-        <div class="channel" onclick="changeStream('AXN')">
-            <img src="https://www.logo.wine/a/logo/AXN_(Portuguese_TV_channel)/AXN_(Portuguese_TV_channel)-Logo.wine.svg" alt="AXN">
-            <p>AXN</p>
-        </div>
-        <div class="channel" onclick="changeStream('GMA Life TV')">
-            <img src="https://static.wikia.nocookie.net/logopedia/images/7/70/Gma-life-tv-first-logo.jpg/revision/latest/scale-to-width-down/250?cb=20180813090909" alt="GMA Life TV">
-            <p>GMA Life TV</p>
-        </div>
-        <div class="channel" onclick="changeStream('GMA News TV')">
-            <img src="https://static.wikia.nocookie.net/logopedia/images/c/cc/GMA_News_TV_2011_logo_animation.png/revision/latest/scale-to-width-down/160?cb=20211211102116" alt="GMA News TV">
-            <p>GMA News TV</p>
-        </div>
-        <div class="channel" onclick="changeStream('GMA Pinoy TV')">
-            <img src="https://content.osn.com/logo/channel/cropped/GMA.png" alt="GMA Pinoy TV">
-            <p>GMA Pinoy TV</p>
-        </div>
-        <div class="channel" onclick="changeStream('Hits Movies')">
-            <img src="https://static.wikia.nocookie.net/logos/images/1/16/HITS_Movies_logo.png/revision/latest/scale-to-width-down/180?cb=20220323123229&path-prefix=vi" alt="Hits Movies">
-            <p>Hits Movies</p>
-        </div>
-    </div>
+<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+<script>
+    const videos = [
+        {
+            manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2304/default.mpd',
+            clearKey: {
+                'a098896d2b11c5f3906a993c3ba5c610' : 'f3f842c54cc96cbbd0bcb96a4cb8a813'
+            }
+        },
+        {
+            manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/5055/default.mpd',
+            clearKey: {
+                '5d600eb70944d681c26c1f48fbe61f10' : '796139ba05a2ab425f978c7fd98b4372'
+            }
+        },
+        {
+            manifestUri: 'https://tglmp03.akamaized.net/out/v1/d15476c2807d4380b0cc375a7d861752/manifest.mpd',
+            clearKey: {
+                '363b551913124d6b80074ca295b25129' : 'a6c6efcab0076d572e5732fb6451d19c'
+            }
+        },
+        {
+            manifestUri: 'https://tglmp02.akamaized.net/out/v1/b37a81eb3585471cb9c639c78edcdefa/manifest.mpd',
+            clearKey: {
+                '90480f571f5d410891d7add7103c1e84' : 'b64f887d2480bcaea992c2f0826449a9'
+            }
+        },
+        {
+            manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/603/default.mpd',
+            clearKey: {
+                'efdb2a8d39151cc39f4b51d762cf9c10' : '13cc535ad4a73201147863cac386cdd3'
+            }
+        },
+        {
+            manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/5095/default.mpd',
+            clearKey: {
+                'b5bfe3554df2abcd37afe130a7e1d310' : 'dccbdf043ac43d18be0b3eb43a582876'
+            }
+        },
+        {
+            manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2605/default.mpd',
+            clearKey: {
+                '6093e12639b24cd651ee6b3c13446d10' : 'f8326f668c7bee309e5302b513e5bdf7'
+            }
+        },
+    ];
 
-    <!-- Include video.js library -->
-    <script src="https://vjs.zencdn.net/7.21.0/video.min.js"></script>
-    <script>
-        const player = videojs('videoPlayer');
+    async function loadVideo(index) {
+        const player = videojs('video-player');
+        const { manifestUri, clearKey } = videos[index];
+        
+        // Set the video source
+        player.src({ src: manifestUri, type: 'application/dash+xml' });
 
-        function changeStream(channel) {
-            const sources = {
-                'A2Z': 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558786.m3u8',
-                'BUKO': 'http://apexelite.xyz:3050/live/scottandersonholmes23@gmail.com/e5y43zFzmq/558780.m3u8',
-                'Kapamilya': 'http://filex.tv:8080/live/gtr/gtr/290851.m3u8',
-                'AXN': 'http://filex.tv:8080/live/gtr/gtr/290856.m3u8',
-                'GMA Life TV': 'http://filex.tv:8080/live/gtr/gtr/290871.m3u8',
-                'GMA News TV': 'http://filex.tv:8080/live/gtr/gtr/290872.m3u8',
-                'GMA Pinoy TV': 'http://filex.tv:8080/live/gtr/gtr/290873.m3u8',
-                'Hits Movies': 'http://21tv.net:8789/play/live.php?mac=00:1A:79:4C:F4:8A&stream=253481&extension=m3u8'
-            };
-
-            // Determine if it's a .ts or .m3u8 stream
-            const type = sources[channel].endsWith('.ts') ? 'video/mp2t' : 'application/x-mpegURL';
-
-            player.src({
-                src: sources[channel],
-                type: type
+        // ClearKey support
+        if (clearKey) {
+            const keySystem = 'com.widevine.alpha'; // Use appropriate key system
+            const key = Object.entries(clearKey).map(([k, v]) => {
+                return {
+                    key: Uint8Array.from(k.match(/.{1,2}/g).map(byte => parseInt(byte, 16))),
+                    initData: Uint8Array.from(v.match(/.{1,2}/g).map(byte => parseInt(byte, 16)))
+                };
             });
-            player.play();
+            player.ready(() => {
+                player.tech().el().setMediaKeys(new MediaKeys(keySystem, key));
+            });
         }
-    </script>
+        
+        console.log('Loading video:', manifestUri);
+        player.play();
+    }
+</script>
+
 </body>
 </html>
