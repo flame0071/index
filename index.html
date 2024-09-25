@@ -16,9 +16,17 @@
         }
         #player {
             width: 100%;
-            height: auto;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             position: relative;
             z-index: 0;
+        }
+        #player iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
         .channel-list {
             display: flex;
@@ -26,6 +34,11 @@
             width: 100%;
             margin-top: 10px;
             padding: 10px 0;
+            scrollbar-width: thin; /* For Firefox */
+            -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+        }
+        .channel-list::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari, and Opera */
         }
         .channel {
             min-width: 120px;
@@ -35,9 +48,16 @@
             padding: 10px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         .channel:hover {
             background-color: #555;
+        }
+        @media (max-width: 768px) {
+            .channel {
+                min-width: 100px; /* Adjust size for smaller screens */
+                font-size: 14px; /* Adjust font size for readability */
+            }
         }
     </style>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
@@ -50,7 +70,7 @@
     <div id="player"></div>
 
     <div class="channel-list" id="channelList">
-    	<div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_a2z.mpd', 'f703e4c8ec9041eeb5028ab4248fa094', 'c22f2162e176eee6273a5d0b68d19530')">A2Z</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_a2z.mpd', 'f703e4c8ec9041eeb5028ab4248fa094', 'c22f2162e176eee6273a5d0b68d19530')">A2Z</div>
         <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_hd.mpd', '2615129ef2c846a9bbd43a641c7303ef', '07c7f996b1734ea288641a68e1cfdc4d')">TV5</div>
         <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595')">RPTV</div>
         <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/truefm_tv.mpd', '0559c95496d44fadb94105b9176c3579', '40d8bb2a46ffd03540e0c6210ece57ce')">True FM TV</div>
@@ -78,7 +98,9 @@
                         },
                         "label": "720p"
                     }]
-                }]
+                }],
+                width: "100%",
+                height: "100%",
             });
         }
 
