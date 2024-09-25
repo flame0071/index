@@ -1,36 +1,121 @@
-<script>
-    var player = jwplayer("player");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mobile-Friendly IPTV Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden; /* Prevents overflow from the player */
+        }
+        #player {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            position: relative;
+            z-index: 0;
+        }
+        #player iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .channel-list {
+            display: flex;
+            overflow-x: auto;
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px 0;
+            scrollbar-width: thin; /* For Firefox */
+            -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+        }
+        .channel-list::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari, and Opera */
+        }
+        .channel {
+            min-width: 120px;
+            margin: 0 5px;
+            text-align: center;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .channel:hover {
+            background-color: #555;
+        }
+        @media (max-width: 768px) {
+            .channel {
+                min-width: 100px; /* Adjust size for smaller screens */
+                font-size: 14px; /* Adjust font size for readability */
+            }
+        }
+    </style>
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwplayer.js"></script>
+    <script>
+        jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
+    </script>
+</head>
+<body>
+    <div id="player"></div>
 
-    function loadChannel(channelUrl, keyId, key) {
-        player.setup({
-            playlist: [{
-                "sources": [{
-                    "default": false,
-                    "type": "application/dash+xml",
-                    "file": channelUrl,
-                    "drm": {
-                        "clearkey": {
-                            "keyId": keyId,
-                            "key": key
-                        }
-                    },
-                    "label": "720p"
-                }]
-            }],
-            width: "100%",
-            height: "100%",
-            autostart: true // Enable autoplay
-        });
-    }
+    <div class="channel-list" id="channelList">
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_a2z.mpd', 'f703e4c8ec9041eeb5028ab4248fa094', 'c22f2162e176eee6273a5d0b68d19530')">A2Z</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_hd.mpd', '2615129ef2c846a9bbd43a641c7303ef', '07c7f996b1734ea288641a68e1cfdc4d')">TV5</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595')">RPTV</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/truefm_tv.mpd', '0559c95496d44fadb94105b9176c3579', '40d8bb2a46ffd03540e0c6210ece57ce')">True FM TV</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_hitsnow.mpd', '14439a1b7afc4527bb0ebc51cf11cbc1', '92b0287c7042f271b266cc11ab7541f1')">Hits Now</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbohd.mpd', 'd47ebabf7a21430b83a8c4b82d9ef6b1', '54c213b2b5f885f1e0290ee4131d425b')">HBO HD</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbofam.mpd', '872910c843294319800d85f9a0940607', 'f79fd895b79c590708cf5e8b5c6263be')">HBO Family</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cg_cinemax.mpd', 'b207c44332844523a3a3b0469e5652d7', 'fe71aea346db08f8c6fbf0592209f955')">Cinemax</div>
+    </div>
 
-    // Load the default channel when the page loads
-    window.onload = function() {
-        loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595'); // Default channel
-    };
+    <script>
+        var player = jwplayer("player");
 
-    // Adjust the player height on window resize
-    window.onresize = function() {
-        var playerElement = document.getElementById('player');
-        playerElement.style.height = playerElement.offsetWidth * 0.5625 + 'px'; // Maintain 16:9 aspect ratio
-    };
-</script>
+        function loadChannel(channelUrl, keyId, key) {
+            player.setup({
+                playlist: [{
+                    "sources": [{
+                        "default": false,
+                        "type": "application/dash+xml",
+                        "file": channelUrl,
+                        "drm": {
+                            "clearkey": {
+                                "keyId": keyId,
+                                "key": key
+                            }
+                        },
+                        "label": "720p"
+                    }]
+                }],
+                width: "100%",
+                height: "100%",
+                autostart: true // Enable autoplay
+            });
+        }
+
+        // Load the default channel when the page loads
+        window.onload = function() {
+            loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595'); // Default channel
+        };
+
+        // Adjust the player height on window resize
+        window.onresize = function() {
+            var playerElement = document.getElementById('player');
+            playerElement.style.height = playerElement.offsetWidth * 0.5625 + 'px'; // Maintain 16:9 aspect ratio
+        };
+    </script>
+</body>
+</html>
