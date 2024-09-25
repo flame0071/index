@@ -22,7 +22,6 @@
             position: relative;
             width: 100%;
             max-width: 640px; /* Maximum width */
-            max-height: 360px; /* Set max height for smaller screens */
             padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             background-color: #000;
             border-radius: 10px;
@@ -67,59 +66,15 @@
             transform: scale(1.05); /* Slightly enlarge on hover */
         }
 
-        @media (max-width: 768px) {
-            .channel {
-                min-width: 80px; /* Smaller channel boxes for mobile */
-                font-size: 12px; /* Smaller text */
-            }
-
-            .player-container {
-                padding-bottom: 75%; /* Adjust aspect ratio for mobile */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .channel {
-                min-width: 70px; /* Smaller channel boxes for very small devices */
-                font-size: 10px; /* Smaller text */
-            }
-        }
-
-        @media (orientation: portrait) {
-            .player-container {
-                margin-top: -20px; /* Adjust the position when in portrait mode */
-            }
-        }
-
-        @media (orientation: landscape) {
-            .player-container {
-                margin-top: 0; /* Reset position for landscape */
-            }
-        }
     </style>
 
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwplayer.js"></script>
     <script>
         jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
-    </script>
-</head>
-<body>
-
-    <div class="player-container">
-        <div id="player"></div>
-    </div>
-
-    <div class="channel-list" id="channelList">
-        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_a2z.mpd', 'f703e4c8ec9041eeb5028ab4248fa094', 'c22f2162e176eee6273a5d0b68d19530')">A2Z</div>
-        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_hd.mpd', '2615129ef2c846a9bbd43a641c7303ef', '07c7f996b1734ea288641a68e1cfdc4d')">TV5</div>
-        <!-- Add more channels here -->
-    </div>
-
-    <script>
-        var player = jwplayer("player");
 
         function loadChannel(channelUrl, keyId, key) {
+            var player = jwplayer("player");
             player.setup({
                 playlist: [{
                     "sources": [{
@@ -143,12 +98,22 @@
 
         window.onload = function() {
             loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595');
-        };
-
-        window.onresize = function() {
-            var playerElement = document.getElementById('player');
-            playerElement.style.height = playerElement.offsetWidth * 0.5625 + 'px';
+            loadChannelList(); // Load channel list
         };
     </script>
+    <script src="channels.js"></script> <!-- Load the channels.js file -->
+</head>
+<body>
+
+    <!-- Video Player Container -->
+    <div class="player-container">
+        <div id="player"></div>
+    </div>
+
+    <!-- Channel List Container -->
+    <div class="channel-list" id="channelList">
+        <!-- Channel list will be populated here -->
+    </div>
+
 </body>
 </html>
