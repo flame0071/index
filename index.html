@@ -20,16 +20,13 @@
 
         .player-container {
             position: relative;
-            width: 100%; /* Full width */
+            width: 100%;
             max-width: 640px; /* Maximum width */
-            height: 0; /* Remove fixed height */
+            max-height: 360px; /* Set max height for smaller screens */
             padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             background-color: #000;
             border-radius: 10px;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             margin-bottom: 10px; /* Spacing between player and channel list */
         }
 
@@ -47,6 +44,7 @@
             width: 100%;
             padding: 10px 0;
             scrollbar-width: thin;
+            scroll-behavior: smooth; /* Smooth scrolling */
         }
 
         .channel-list::-webkit-scrollbar {
@@ -61,11 +59,12 @@
             padding: 10px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s; /* Add scale transition */
         }
 
         .channel:hover {
             background-color: #555;
+            transform: scale(1.05); /* Slightly enlarge on hover */
         }
 
         @media (max-width: 768px) {
@@ -76,6 +75,25 @@
 
             .player-container {
                 padding-bottom: 75%; /* Adjust aspect ratio for mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .channel {
+                min-width: 70px; /* Smaller channel boxes for very small devices */
+                font-size: 10px; /* Smaller text */
+            }
+        }
+
+        @media (orientation: portrait) {
+            .player-container {
+                margin-top: -20px; /* Adjust the position when in portrait mode */
+            }
+        }
+
+        @media (orientation: landscape) {
+            .player-container {
+                margin-top: 0; /* Reset position for landscape */
             }
         }
     </style>
