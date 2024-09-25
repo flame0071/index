@@ -13,6 +13,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow: hidden; /* Prevents overflow from the player */
         }
         #player {
             width: 100%;
@@ -101,14 +102,18 @@
                 }],
                 width: "100%",
                 height: "100%",
-                aspectratio: "16:9", // Maintain the aspect ratio
-                stretching: "exactfit" // Ensure it stretches to fill the space
             });
         }
 
         // Load the default channel when the page loads
         window.onload = function() {
             loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595'); // Default channel
+        };
+
+        // Adjust the player height on window resize
+        window.onresize = function() {
+            var playerElement = document.getElementById('player');
+            playerElement.style.height = playerElement.offsetWidth * 0.5625 + 'px'; // Maintain 16:9 aspect ratio
         };
     </script>
 </body>
