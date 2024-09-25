@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mobile-Friendly IPTV Player</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <style>
         body {
             margin: 0;
@@ -13,36 +13,48 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow: hidden; /* Prevents overflow from the player */
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
         }
-        #player {
-            width: 100%;
-            height: 0;
-            padding-bottom: 50.00%; /* 16:9 Aspect Ratio */
+
+        .player-container {
             position: relative;
-            z-index: 0;
+            width: 100%; /* Full width */
+            max-width: 640px; /* Maximum width */
+            height: 0; /* Remove fixed height */
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px; /* Spacing between player and channel list */
         }
-        #player iframe {
+
+        #player {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
         }
+
         .channel-list {
             display: flex;
             overflow-x: auto;
             width: 100%;
-            margin-top: 10px;
             padding: 10px 0;
-            scrollbar-width: thin; /* For Firefox */
-            -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+            scrollbar-width: thin;
         }
+
         .channel-list::-webkit-scrollbar {
-            display: none; /* For Chrome, Safari, and Opera */
+            display: none;
         }
+
         .channel {
-            min-width: 120px;
+            min-width: 100px; /* Adjusted for mobile */
             margin: 0 5px;
             text-align: center;
             background-color: #333;
@@ -51,16 +63,23 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .channel:hover {
             background-color: #555;
         }
+
         @media (max-width: 768px) {
             .channel {
-                min-width: 100px; /* Adjust size for smaller screens */
-                font-size: 14px; /* Adjust font size for readability */
+                min-width: 80px; /* Smaller channel boxes for mobile */
+                font-size: 12px; /* Smaller text */
+            }
+
+            .player-container {
+                padding-bottom: 75%; /* Adjust aspect ratio for mobile */
             }
         }
     </style>
+
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwplayer.js"></script>
     <script>
@@ -68,17 +87,15 @@
     </script>
 </head>
 <body>
-    <div id="player"></div>
+
+    <div class="player-container">
+        <div id="player"></div>
+    </div>
 
     <div class="channel-list" id="channelList">
         <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_a2z.mpd', 'f703e4c8ec9041eeb5028ab4248fa094', 'c22f2162e176eee6273a5d0b68d19530')">A2Z</div>
         <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_hd.mpd', '2615129ef2c846a9bbd43a641c7303ef', '07c7f996b1734ea288641a68e1cfdc4d')">TV5</div>
-        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595')">RPTV</div>
-        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/truefm_tv.mpd', '0559c95496d44fadb94105b9176c3579', '40d8bb2a46ffd03540e0c6210ece57ce')">True FM TV</div>
-        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_hitsnow.mpd', '14439a1b7afc4527bb0ebc51cf11cbc1', '92b0287c7042f271b266cc11ab7541f1')">Hits Now</div>
-        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbohd.mpd', 'd47ebabf7a21430b83a8c4b82d9ef6b1', '54c213b2b5f885f1e0290ee4131d425b')">HBO HD</div>
-        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbofam.mpd', '872910c843294319800d85f9a0940607', 'f79fd895b79c590708cf5e8b5c6263be')">HBO Family</div>
-        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cg_cinemax.mpd', 'b207c44332844523a3a3b0469e5652d7', 'fe71aea346db08f8c6fbf0592209f955')">Cinemax</div>
+        <!-- Add more channels here -->
     </div>
 
     <script>
@@ -102,19 +119,17 @@
                 }],
                 width: "100%",
                 height: "100%",
-                autostart: true // Enable autoplay
+                autostart: true
             });
         }
 
-        // Load the default channel when the page loads
         window.onload = function() {
-            loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595'); // Default channel
+            loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595');
         };
 
-        // Adjust the player height on window resize
         window.onresize = function() {
             var playerElement = document.getElementById('player');
-            playerElement.style.height = playerElement.offsetWidth * 0.5625 + 'px'; // Maintain 16:9 aspect ratio
+            playerElement.style.height = playerElement.offsetWidth * 0.5625 + 'px';
         };
     </script>
 </body>
