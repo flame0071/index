@@ -1,122 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <title>Mobile-Friendly IPTV Player</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Friendly JW Player</title>
-
-    <style type="text/css">
+    <style>
         body {
             margin: 0;
             padding: 0;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
         #player {
-            width: 100vw; /* Full viewport width */
-            height: 56.25vw; /* 16:9 aspect ratio */
-            max-width: 100%; 
-            max-height: 100vh; /* Full viewport height when in landscape */
+            width: 100%;
+            height: auto; /* Auto height for responsiveness */
             position: relative;
             z-index: 0;
         }
-
-        #stretching-button {
-            padding: 8px;
-            margin-right: 10px;
-            background-color: blue;
-            color: white;
-            border: none;
+        .channel-list {
+            display: flex;
+            overflow-x: auto; /* Horizontal scrolling */
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px 0;
+        }
+        .channel {
+            min-width: 120px; /* Width of each channel button */
+            margin: 0 5px;
+            text-align: center;
+            background-color: #333;
+            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            z-index: 10;
         }
-
-        #stretching-button:hover {
-            background-color: black;
+        .channel:hover {
+            background-color: #555; /* Hover effect */
         }
     </style>
-
-    <!-- JW Player Scripts -->
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwplayer.js"></script>
-    <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/provider.shaka.js"></script>
-    
     <script>
         jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
     </script>
 </head>
-
-<body style='background-color: black; margin:0; padding:0;'>
-
-    <!-- JW Player Container -->
+<body>
     <div id="player"></div>
 
-    <!-- Stretching Button -->
-    <button id="stretching-button">Change Aspect Ratio</button>
+    <div class="channel-list" id="channelList">
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd')">CNN</div>
+        <div class="channel" onclick="loadChannel('https://example.com/another_channel.mpd')">Another Channel</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/truefm_tv.mpd', '0559c95496d44fadb94105b9176c3579:40d8bb2a46ffd03540e0c6210ece57ce')">truefmtv</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_hitsnow.mpd', '14439a1b7afc4527bb0ebc51cf11cbc1:92b0287c7042f271b266cc11ab7541f1')">hits now</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbohd.mpd', 'd47ebabf7a21430b83a8c4b82d9ef6b1:54c213b2b5f885f1e0290ee4131d425b')">HBO HD</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbofam.mpd', '872910c843294319800d85f9a0940607:f79fd895b79c590708cf5e8b5c6263be')">HBO Family</div>
+        <div class="channel" onclick="loadChannel('https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cg_cinemax.mpd', 'b207c44332844523a3a3b0469e5652d7:fe71aea346db08f8c6fbf0592209f955')">Cinemax</div>
+    </div>
 
-    <script type="text/javascript">
+    <script>
         var player = jwplayer("player");
 
-        // Setup JW Player
-        player.setup({
-            playlist: [{
-                "image": getParameterByName('img'),
-                "sources": [{
-                    "default": false,
-                    "type": "application/dash+xml",
-                    "file": "https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd",
-                    "drm": {
-                        "clearkey": {
-                            "keyId": "1917f4caf2364e6d9b1507326a85ead6",
-                            "key": "a1340a251a5aa63a9b0ea5d9d7f67595"
-                        }
-                    },
-                    "label": "720p"
-                }]
-            }],
-            width: "100%",
-            height: "100%",
-            aspectratio: "16:9",
-            stretching: 'uniform',
-            autostart: true,
-            mute: false,
-            logo: {
-                file: "https://cdn.jsdelivr.net/gh/Arjunaaaaa/lsbtv/logolsbtv.png",
-                link: 'https://linktr.ee/livestreambolatv',
-                position: 'bottom-right',
-            },
-            captions: {
-                color: '#FFF',
-                fontSize: 15,
-                backgroundOpacity: 0,
-                edgeStyle: 'raised'
-            }
-        });
-
-        // Function to toggle aspect ratio
-        function toggleStretchingMode() {
-            player.setConfig({
-                stretching: player.getConfig().stretching === "uniform" ? "exactfit" : "uniform"
+        function loadChannel(channelUrl, key) {
+            player.setup({
+                playlist: [{
+                    "sources": [{
+                        "file": channelUrl,
+                        "type": "application/dash+xml",
+                        "key": key // Idagdag ang key dito
+                    }]
+                }],
+                width: "100%",
+                height: "100%",
+                aspectratio: "16:9",
+                autostart: true,
+                mute: false,
+                logo: {
+                    file: "https://cdn.jsdelivr.net/gh/Arjunaaaaa/lsbtv/logolsbtv.png",
+                    position: 'bottom-right',
+                },
             });
         }
 
-        // Event listener for button click
-        document.getElementById("stretching-button").addEventListener("click", toggleStretchingMode);
-
-        // Helper function to get URL parameters
-        function getParameterByName(name) {
-            var url = window.location.href;
-            name = name.replace(/[]/, '\').replace(/[]/, '\');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(url);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        }
+        // Load the default channel when the page loads
+        window.onload = function() {
+            loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd'); // Default channel
+        };
     </script>
-
 </body>
 </html>
