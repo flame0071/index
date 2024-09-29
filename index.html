@@ -2,118 +2,146 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mobile-Friendly IPTV Player</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWPlayer Streaming Example</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: black;
-            color: white;
+            background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            overflow: hidden;
         }
-
-        .player-container {
-            position: relative;
-            width: 100%;
-            max-width: 640px; /* Maximum width */
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            background-color: #000;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 10px; /* Spacing between player and channel list */
-        }
-
         #player {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
+            max-width: 800px;
+            height: 450px;
         }
-
-        .channel-list {
-            display: flex;
-            overflow-x: auto;
-            width: 100%;
-            padding: 10px 0;
-            scrollbar-width: thin;
-            scroll-behavior: smooth; /* Smooth scrolling */
-        }
-
-        .channel-list::-webkit-scrollbar {
-            display: none;
-        }
-
-        .channel {
-            min-width: 100px; /* Adjusted for mobile */
-            margin: 0 5px;
-            text-align: center;
-            background-color: #333;
+        select {
+            margin-bottom: 20px;
             padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s; /* Add scale transition */
+            font-size: 16px;
         }
-
-        .channel:hover {
-            background-color: #555;
-            transform: scale(1.05); /* Slightly enlarge on hover */
-        }
-
     </style>
-
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwplayer.js"></script>
+    <script src="channels.js"></script> <!-- Import the channels.js file -->
     <script>
         jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
 
-        function loadChannel(channelUrl, keyId, key) {
-            var player = jwplayer("player");
-            player.setup({
-                playlist: [{
-                    "sources": [{
-                        "default": false,
-                        "type": "application/dash+xml",
-                        "file": channelUrl,
-                        "drm": {
-                            "clearkey": {
-                                "keyId": keyId,
-                                "key": key
-                            }
-                        },
-                        "label": "720p"
-                    }]
-                }],
+        function loadStream(channelKey) {
+            const channel = channels[channelKey];
+
+            jwplayer("player").setup({
+                file: channel.url,
+                type: channel.type,
+                drm: channel.type === 'mpd' ? {
+                    clearkey: {
+                        keyId: channel.keyId,
+                        key: channel.key
+                    }
+                } : undefined,
                 width: "100%",
-                height: "100%",
+                height: 450,
                 autostart: true
             });
         }
 
         window.onload = function() {
-            loadChannel('https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd', '1917f4caf2364e6d9b1507326a85ead6', 'a1340a251a5aa63a9b0ea5d9d7f67595');
-            loadChannelList(); // Load channel list
+            const channelSelect = document.getElementById('channelSelect');
+            channelSelect.addEventListener('change', function() {
+                loadStream(this.value);
+            });
+
+            // Load the first stream by default
+            loadStream(channelSelect.value);
         };
     </script>
-    <script src="channels.js"></script> <!-- Load the channels.js file -->
 </head>
 <body>
+    <select id="channelSelect">
+	        <option value="tv5">TV5</option>
+			<option value="anc">ANC</option>
+            <option value="Animax">Animax</option>
+		    <option value="cartoon_net_hd">Cartoon Network HD</option>
+		    <option value="nickjr">Nickjr</option>
+            <option value="nickelodeon">Nickelodeon</option>
+            <option value="hbohd">HBO HD</option>
+            <option value="teleradyo">Teleradyo</option>
+			<option value="sarisari">SARISARI</option>
+			<option value="ibc13">IBC13</option>
+			<option value="buko">BUKO</option>
+			<option value="knowledge_channel">knowledge_channel</option>
+            <option value="bilyonaryoch">Bilyonaryo</option>
+            <option value="RPTV">RPTV</option>
+            <option value="truefmtv">True FM TV</option>
+            <option value="hits_now">Hits Now</option>
+			<option value="cinemaone">CinemaOne</option>
+			<option value="cinemo">CineMo!</option>
+            <option value="hbo_family">HBO Family</option>
+            <option value="cinemax">Cinemax</option>
+			<option value="blueant_extreme">Rock Action</option>
+			<option value="rock_entertainment">Rock Entertainment</option>
+            <option value="hbo_signature">HBO Signature</option>
+            <option value="hbo_hits">HBO Hits</option>
+            <option value="tvn_movies">TVN Movies</option>
+            <option value="dreamworks_tag">Dreamworks Tagalog</option>
+            <option value="tvn_plus">TVN</option>
+            <option value="popup_ppv_hd">Popup PPV HD</option>
+            <option value="mp_tv">MPTV</option>
+            <option value="a2z">A2Z</option>
+            <option value="dreamworks_hd">Dreamworks HD</option>
+            <option value="ptv4">PTV4</option>
+			<option value="taptv">TAP TV</option>
+            <option value="tap_edge">TAP Edge</option>
+            <option value="tap_sports">TAP Sports</option>
+            <option value="one_sports_plus_hd">One Sports Plus HD</option>
+            <option value="cctv4">CCTV4</option>
+            <option value="pba_rush_hd">PBA Rush HD</option>
 
-    <!-- Video Player Container -->
-    <div class="player-container">
-        <div id="player"></div>
-    </div>
+             <!-- Additional channels from search results -->
+             <option value="arirang">Arirang</option> 
+			 <option value="bbcearth_hd">BBC Earth</option> 
+			 <option value="discovery">Discovery</option>
+             <option value="kbs_world">KBS World</option> 
+             <option value="onenews_hd">One News HD</option> 
+			 <option value="kix_hd">Kix HD</option> 
+             <option value="lifetime">Lifetime</option> 
+             <option value="hgtv_hd">HGTV HD</option> 
+		     <option value="asianfoodnetwork">Asian Food Network</option>
+			 <option value="travel_channel">Travel Channel</option> 
+             <option value="uaap_varsity">UAAP Varsity</option> 
+             <option value="hits_hd">Hits HD</option> 
+			 <option value="crime_investigation">Crime Investigation</option>
+			 <option value="tech_storm">Tech Storm</option>
+             <option value="aljazeera">Al Jazeera</option>
+             <option value="bbcworld_news">BBCWORLD News</option>			 
+			 <option value="channelnews_asia">Channel News Asia</option>
+             <option value="abc_australia">ABC Australia</option>			 
+             <option value="oneph">One PH</option> 
+             <option value="onesports">One Sports</option> 
+		     <option value="SPOTV_HD">SPOTV</option>
+			 <option value="SPOTV_HD2">SPOTV2</option>
+             <option value="uaap_varsity">UAAP Varsity</option> 
+             <option value="premiersports_hd">Premier Sports</option> 
+             <option value="premier_tennishd">Premier Tennis</option> 
+             <option value="pbo">PBO</option> 
+			 <option value="cg_tagalogmovie">TMC</option>
+             <option value="viva">VIVA</option> 
+             <option value="tapactionflix_hd">Tap Action Flix</option> 
+             <option value="thrill">Thrill</option> 
+             <option value="foodnetwork_hd">Food Network HD</option> 
+             <option value="depedchannel">DepEd Channel</option> 
+             <option value="history_hd">History HD</option> 
+			 <option value="animal_planet">Animal Planet</option> 
+             <option value="fashiontv_hd">Fashion TV HD</option> 
+             <option value="bloomberg">Bloomberg</option> 
+    </select>
 
-    <!-- Channel List Container -->
-    <div class="channel-list" id="channelList">
-        <!-- Channel list will be populated here -->
-    </div>
-
+    <div id="player"></div>
 </body>
 </html>
